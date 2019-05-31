@@ -15,6 +15,21 @@ return function (App $app) {
         return $logger;
     };
 
+    $container[PDO::class] = function ($c) {
+        $settings = $c->get('settings')[PDO::class];
+        $dsn = sprintf('mysql:host=%s;dbname=%s',
+            $settings['host'],
+            $settings['database'],
+        );
+
+        return new PDO(
+            $dsn,
+            $settings['user'],
+            $settings['password'],
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        );
+    };
+
     $container[Controller::class] = function ($c) {
         return new Controller();
     };

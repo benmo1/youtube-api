@@ -9,6 +9,5 @@ class Controller
 {
     public function create(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-        die('here');
     }
 }

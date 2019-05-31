@@ -3,11 +3,12 @@
 namespace Tests\Functional;
 
 use Dotenv\Dotenv;
+use PDO;
+use PHPUnit\Framework\TestCase;
 use Slim\App;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\Environment;
-use PHPUnit\Framework\TestCase;
 
 /**
  * This is an example class that shows how you could set up a method that
@@ -23,6 +24,50 @@ class BaseTestCase extends TestCase
      * @var bool
      */
     protected $withMiddleware = true;
+
+    /**
+     * @var App
+     */
+    protected $app;
+
+    /**
+     * @before
+     */
+    protected function setUpApp()
+    {
+        $dotenv = Dotenv::create(__DIR__ . '/../../');
+        $dotenv->load();
+
+        // Use the application settings
+        $settings = require __DIR__ . '/../../src/settings.php';
+
+        // Instantiate the application
+        $app = new App($settings);
+
+        // Set up dependencies
+        $dependencies = require __DIR__ . '/../../src/dependencies.php';
+        $dependencies($app);
+
+        // Register middleware
+        if ($this->withMiddleware) {
+            $middleware = require __DIR__ . '/../../src/middleware.php';
+            $middleware($app);
+        }
+
+        // Register routes
+        $routes = require __DIR__ . '/../../src/routes.php';
+        $routes($app);
+
+        $this->app = $app;
+    }
+
+    /**
+     * @return PDO
+     */
+    protected function database()
+    {
+        return $this->app->getContainer()->get(PDO::class);
+    }
 
     /**
      * Process the application given a request method and URI
@@ -53,31 +98,8 @@ class BaseTestCase extends TestCase
         // Set up a response object
         $response = new Response();
 
-        $dotenv = Dotenv::create(__DIR__ . '/../../');
-        $dotenv->load();
-
-        // Use the application settings
-        $settings = require __DIR__ . '/../../src/settings.php';
-
-        // Instantiate the application
-        $app = new App($settings);
-
-        // Set up dependencies
-        $dependencies = require __DIR__ . '/../../src/dependencies.php';
-        $dependencies($app);
-
-        // Register middleware
-        if ($this->withMiddleware) {
-            $middleware = require __DIR__ . '/../../src/middleware.php';
-            $middleware($app);
-        }
-
-        // Register routes
-        $routes = require __DIR__ . '/../../src/routes.php';
-        $routes($app);
-
         // Process the application
-        $response = $app->process($request, $response);
+        $response = $this->app->process($request, $response);
 
         // Return the response
         return $response;
