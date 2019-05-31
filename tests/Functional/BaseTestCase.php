@@ -2,6 +2,7 @@
 
 namespace Tests\Functional;
 
+use Dotenv\Dotenv;
 use Slim\App;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -51,6 +52,9 @@ class BaseTestCase extends TestCase
 
         // Set up a response object
         $response = new Response();
+
+        $dotenv = Dotenv::create(__DIR__ . '/../../');
+        $dotenv->load();
 
         // Use the application settings
         $settings = require __DIR__ . '/../../src/settings.php';
