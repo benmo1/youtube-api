@@ -8,11 +8,11 @@ return [
         // Monolog settings
         'logger' => [
             'name' => 'slim-app',
-            'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
+            'path' => isset($_ENV['DOCKER']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
             'level' => \Monolog\Logger::DEBUG,
         ],
 
-        PDO::class => [
+        'database' => [
             'host' => $_ENV['MYSQL_HOST'],
             'database' => $_ENV['MYSQL_DATABASE'],
             'user' => $_ENV['MYSQL_USER'],

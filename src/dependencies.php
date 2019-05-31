@@ -1,13 +1,13 @@
 <?php
 
-use Slim\App;
+use Monolog\Logger;
 use MorrisPhp\YouTubeApp\Controller\Controller;
+use Slim\App;
 
 return function (App $app) {
     $container = $app->getContainer();
 
-    // monolog
-    $container['logger'] = function ($c) {
+    $container[Logger::class] = function ($c) {
         $settings = $c->get('settings')['logger'];
         $logger = new \Monolog\Logger($settings['name']);
         $logger->pushProcessor(new \Monolog\Processor\UidProcessor());
@@ -16,7 +16,7 @@ return function (App $app) {
     };
 
     $container[PDO::class] = function ($c) {
-        $settings = $c->get('settings')[PDO::class];
+        $settings = $c->get('settings')['database'];
         $dsn = sprintf('mysql:host=%s;dbname=%s',
             $settings['host'],
             $settings['database'],
