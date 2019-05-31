@@ -1,6 +1,6 @@
 <?php
 
-namespace MorrisPhp\YouTubeApp\Controller;
+namespace MorrisPhp\YouTubeApi\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

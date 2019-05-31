@@ -1,6 +1,6 @@
 <?php
 
-use MorrisPhp\YouTubeApp\Controller\Controller;
+use MorrisPhp\YouTubeApi\Controller\Controller;
 use Slim\App;
 
 return function (App $app) {
