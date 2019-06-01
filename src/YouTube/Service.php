@@ -81,7 +81,7 @@ class Service
                     'date' => $searchResult->getSnippet()->getPublishedAt()
                 ]);
             }
-        } while ($response->getNextPageToken() && ($i++ < 10)); // To save our quota if there is a bug
+        } while ($response->getNextPageToken() && ($i++ < 20)); // To save our quota if there is a bug
 
         return $videos;
     }
