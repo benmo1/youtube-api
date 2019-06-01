@@ -1,7 +1,7 @@
 <?php
 
 use MorrisPhp\YouTubeApi\Controller\Controller;
-use MorrisPhp\YouTubeApi\Validation\UriQueryValidationMiddleware;
+use MorrisPhp\YouTubeApi\Middleware\UriQueryValidationMiddleware;
 use Slim\App;
 
 return function (App $app) {

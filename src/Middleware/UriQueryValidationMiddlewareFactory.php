@@ -1,6 +1,6 @@
 <?php
 
-namespace MorrisPhp\YouTubeApi\Validation;
+namespace MorrisPhp\YouTubeApi\Middleware;
 
 use MorrisPhp\YouTubeApi\FactoryInterface;
 use Psr\Container\ContainerInterface;
