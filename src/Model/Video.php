@@ -87,6 +87,8 @@ class Video implements JsonSerializable
             $this->date = $date;
         } else if (is_string($date)) {
             $this->date = new DateTime($date);
+        } else if (empty($date)) {
+            $this->date = null;
         } else {
             throw new InvalidArgumentException();
         }
@@ -97,10 +99,10 @@ class Video implements JsonSerializable
      */
     public function jsonSerialize() : array
     {
-        return [
+        return array_filter([
             'id' => $this->id,
             'title' => $this->title,
-            'date' => $this->getDate()->format(self::DATE_FORMAT)
-        ];
+            'date' => $this->getDate() ? $this->getDate()->format(self::DATE_FORMAT) : null
+        ]);
     }
 }

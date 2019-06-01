@@ -61,7 +61,14 @@ class Controller
 
     public function getAll(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-        $videos = $this->videoRepository->getAll();
+        // Clean from middleware
+        $params = $request->getQueryParams();
+
+        if (!empty($params['q'])) {
+            $videos = $this->videoRepository->getAllByTerm($params['q']);
+        } else {
+            $videos = $this->videoRepository->getAll();
+        }
 
         $response->getBody()->write(json_encode($videos));
         $response->getBody()->rewind();

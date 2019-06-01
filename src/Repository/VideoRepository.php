@@ -56,6 +56,20 @@ class VideoRepository
     }
 
     /**
+     * @return array<Video>
+     */
+    public function getAllByTerm(string $searchTerm) : array
+    {
+        $statement = $this->pdo->prepare('SELECT * FROM videos WHERE title LIKE :search_term');
+        $statement->execute(['search_term' => "%$searchTerm%"]);
+
+        return array_map(function ($record) {
+            unset($record['date']);
+            return new Video($record);
+        }, $statement->fetchAll());
+    }
+
+    /**
      * @param int|string $id
      * @return Video
      */

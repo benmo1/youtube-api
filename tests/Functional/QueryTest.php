@@ -6,8 +6,6 @@ class QueryTest extends BaseTestCase
 {
     public function testQueryYoutubeSearchWithNumbersReturnsExpectedResponse()
     {
-        $this->markTestSkipped('For TDD');
-
         $response = $this->runApp(
             'GET',
             '/youtube-search?q=21st'
@@ -27,8 +25,6 @@ class QueryTest extends BaseTestCase
 
     public function testQueryYoutubeSearchWithMixedCaseReturnsExpectedResponse()
     {
-        $this->markTestSkipped('For TDD');
-
         $response = $this->runApp(
             'GET',
             '/youtube-search?q=master'
@@ -48,8 +44,6 @@ class QueryTest extends BaseTestCase
 
     public function testQueryYoutubeSearchWithNoMatchesReturnsExpectedResponse()
     {
-        $this->markTestSkipped('For TDD');
-
         $response = $this->runApp(
             'GET',
             '/youtube-search?q=89jwnsd09jqlwkejSUAJHDSwisajjiqowaksdj'
