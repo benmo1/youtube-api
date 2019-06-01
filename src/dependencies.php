@@ -3,10 +3,13 @@
 use Monolog\Logger;
 use MorrisPhp\YouTubeApi\Controller\Controller;
 use MorrisPhp\YouTubeApi\Controller\ControllerFactory;
-use MorrisPhp\YouTubeApi\YouTube\Service;
-use MorrisPhp\YouTubeApi\YouTube\ServiceFactory;
 use MorrisPhp\YouTubeApi\Repository\ChannelRepository;
 use MorrisPhp\YouTubeApi\Repository\ChannelRepositoryFactory;
+use MorrisPhp\YouTubeApi\Middleware\JsonContentTypeMiddleware;
+use MorrisPhp\YouTubeApi\Middleware\JsonContentTypeMiddlewareFactory;
+use MorrisPhp\YouTubeApi\YouTube\Service;
+use MorrisPhp\YouTubeApi\YouTube\ServiceFactory;
+
 use MorrisPhp\YouTubeApi\Repository\VideoRepository;
 use MorrisPhp\YouTubeApi\Repository\VideoRepositoryFactory;
 use Slim\App;
@@ -59,8 +62,9 @@ return function (App $app) {
         return new Google_Service_YouTube($client);
     };
 
-    $container[Service::class] = new ServiceFactory();
     $container[Controller::class] = new ControllerFactory();
     $container[ChannelRepository::class] = new ChannelRepositoryFactory();
+    $container[JsonContentTypeMiddleware::class] = new JsonContentTypeMiddlewareFactory();
+    $container[Service::class] = new ServiceFactory();
     $container[VideoRepository::class] = new VideoRepositoryFactory();
 };
