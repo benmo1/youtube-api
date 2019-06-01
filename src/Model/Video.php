@@ -3,6 +3,7 @@
 namespace MorrisPhp\YouTubeApi\Model;
 
 use DateTime;
+use InvalidArgumentException;
 use JsonSerializable;
 
 class Video implements JsonSerializable
@@ -10,66 +11,87 @@ class Video implements JsonSerializable
     const DATE_FORMAT = 'Y-m-d';
 
     /**
-     * @var string
-     */
-    private $title;
-
-    /**
-     * @var DateTime
-     */
-    private $publishedAt;
-
-    /**
-     * Note this may be null if it hasn't
-     * been persisted to the db yet
-     *
-     * @var mixed - int|stringy-int|null
+     * @var ?int
      */
     private $id;
 
     /**
+     * @var ?string
+     */
+    private $title;
+
+    /**
+     * @var ?DateTime
+     */
+    private $date;
+
+    /**
      * Video constructor.
-     * @param int $id
-     * @param string $title
-     * @param DateTime $publishedAt
+     * @param array $props
+     * @throws \Exception
      */
-    public function __construct(string $title, DateTime $publishedAt, $id = null)
+    public function __construct(array $props)
     {
-        $this->title = $title;
-        $this->publishedAt = $publishedAt;
-        $this->id = $id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function date(): DateTime
-    {
-        return $this->publishedAt;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
+        $this->setId($props['id'] ?? $this->id);
+        $this->setTitle($props['title'] ?? $this->title);
+        $this->setDate($props['date'] ?? $this->date);
     }
 
     /**
      * @return mixed
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = (int) $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param mixed $title
+     */
+    public function setTitle($title): void
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param $date
+     * @throws \Exception
+     */
+    public function setDate($date): void
+    {
+        if ($date instanceof DateTime) {
+            $this->date = $date;
+        } else if (is_string($date)) {
+            $this->date = new DateTime($date);
+        } else if (empty($date)) {
+            $this->date = null;
+        } else {
+            throw new InvalidArgumentException();
+        }
     }
 
     /**
@@ -77,11 +99,10 @@ class Video implements JsonSerializable
      */
     public function jsonSerialize() : array
     {
-        return [
+        return array_filter([
             'id' => $this->id,
             'title' => $this->title,
-            'date' => $this->date()->format(self::DATE_FORMAT)
-        ];
+            'date' => $this->getDate() ? $this->getDate()->format(self::DATE_FORMAT) : null
+        ]);
     }
-
 }
