@@ -33,4 +33,18 @@ class GetAllTest extends BaseTestCase
             json_decode((string) $response->getBody(), true)
         );
     }
+
+    public function testGetAllYoutubeSearchReturnsExpectedResponseWithNoVideos()
+    {
+        $this->database()->exec('TRUNCATE TABLE videos');
+
+        $response = $this->runApp(
+            'GET',
+            '/youtube-search'
+        );
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $this->assertEquals([], json_decode((string) $response->getBody(), true));
+    }
 }
