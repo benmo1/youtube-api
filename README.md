@@ -1,17 +1,17 @@
 
-###Instructions
+### Instructions
 
 
 Navigate to the build folder and source convenience aliases:
 
-```sh
+```
 cd ./build/dev
 . scripts.sh
 ```
 
 Aliases are as follows, and must be run from `./build/dev`:
 
-```sh
+```
 build - installs vendor libs, creates dev .env
 start - starts php dev server, mysql server
 stop - shuts down the servers
@@ -24,7 +24,7 @@ You can access the endpoints at localhost:8080/youtube-search
 
 ---
 
-###Notes 
+### Notes
 
 Tests may hang if `test` is run straight after `start`. This is because the mysql server takes a while to start and the tests require a database connection. However, it retries the connection until it works so they should run.
 
@@ -33,7 +33,7 @@ One test is skipped because it hits the actual youtube api. This means it requir
 
 ---
 
-###Things that could be better
+### Things that could be better
 
 - Fetching results from youtube asynchronously (although node is better than php for this, database insertion may be the bottleneck anyway - see below)
 - Returning paginated results in the get all endpoint
