@@ -7,4 +7,4 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php -r "unlink('composer-setup.php');" && \
     mv composer.phar /usr/local/bin/composer
 
-CMD ["composer", "--no-plugins", "install", "--no-scripts"]
+ENTRYPOINT ["composer"]
