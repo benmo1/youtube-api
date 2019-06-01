@@ -82,4 +82,15 @@ class VideoRepository
             (int) $record['id']
         );
     }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function delete($id) : bool
+    {
+        $statement = $this->pdo->prepare('DELETE FROM videos WHERE id = :id');
+        $statement->execute(['id' => $id]);
+        return (bool) $statement->rowCount();
+    }
 }
