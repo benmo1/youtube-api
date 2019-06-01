@@ -16,6 +16,13 @@ use Slim\App;
 return function (App $app) {
     $container = $app->getContainer();
 
+    // Proprietary slim dependency
+    $container['notFoundHandler'] = function ($c) {
+        return function ($request, $response) use ($c) {
+            return $response->withStatus(404);
+        };
+    };
+
     $container[Logger::class] = function ($c) {
         $settings = $c->get('settings')['logger'];
         $logger = new \Monolog\Logger($settings['name']);
