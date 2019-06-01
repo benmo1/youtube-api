@@ -30,10 +30,7 @@ class ChannelRepository
         $statement = $this->pdo->query('SELECT * FROM channels');
 
         foreach ($statement->fetchAll() as $record) {
-            $channels[] = new Channel(
-                $record['id'],
-                $record['channel_name']
-            );
+            $channels[] = new Channel($record);
         }
 
         return $channels;

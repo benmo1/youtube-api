@@ -5,39 +5,54 @@ namespace MorrisPhp\YouTubeApi\Model;
 class Channel
 {
     /**
-     * @var int
+     * @var ?int
      */
     private $id;
 
     /**
-     * @var string
+     * @var ?string
      */
     private $channelName;
 
     /**
      * Channel constructor.
-     * @param int $id
-     * @param string $channelName
+     * @param array $props
      */
-    public function __construct(int $id, string $channelName)
+    public function __construct(array $props)
     {
-        $this->id = $id;
-        $this->channelName = $channelName;
+        $this->setId($props['id'] ?? null);
+        $this->setChannelName($props['channel_name'] ?? null);
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
 
     /**
-     * @return string
+     * @param mixed $id
      */
-    public function getChannelName(): string
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getChannelName()
     {
         return $this->channelName;
+    }
+
+    /**
+     * @param mixed $channelName
+     */
+    public function setChannelName($channelName): void
+    {
+        $this->channelName = $channelName;
     }
 }
