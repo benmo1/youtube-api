@@ -54,13 +54,15 @@ class QueryTest extends BaseTestCase
         $this->assertEquals([], json_decode((string) $response->getBody(), true));
     }
 
-    public function testQueryYoutubeSearchWithBadCharactersReturnsExpectedResponse()
+    /**
+     * @param $badChar
+     * @dataProvider badCharacters
+     */
+    public function testQueryYoutubeSearchWithBadCharactersReturnsExpectedResponse($badChar)
     {
-        $this->markTestSkipped('For TDD');
-
         $response = $this->runApp(
             'GET',
-            "/youtube-search?q=every+cyclist's+nightmare"
+            "/youtube-search?q=every+cyclist$badChar+nightmare"
         );
 
         $this->assertEquals(400, $response->getStatusCode());
@@ -68,21 +70,7 @@ class QueryTest extends BaseTestCase
         $this->assertEquals('{"error":"Invalid search characters - must be numeric, alpha, or single spaces."}', (string) $response->getBody());
     }
 
-    public function testQueryYoutubeSearchWithLongArgReturnsExpectedResponse()
-    {
-        $this->markTestSkipped('For TDD');
-
-        $response = $this->runApp(
-            'GET',
-            "/youtube-search?q=every+cyclist's+nightmare"
-        );
-
-        $this->assertEquals(400, $response->getStatusCode());
-
-        $this->assertEquals('{"error":"Query parameter is too long - 20 characters max exceeded."}', (string) $response->getBody());
-    }
-
-    public function data()
+    public function videoData()
     {
         $this->markTestSkipped('For TDD');
 
@@ -103,5 +91,12 @@ class QueryTest extends BaseTestCase
                 'date' => '2019-03-23',
             ],
         ];
+    }
+
+    public function badCharacters()
+    {
+        return array_map(function ($ch) {
+            return ['badChar' => $ch];
+        }, str_split('!@£$%^*(){}[]`~\/=\''));
     }
 }
