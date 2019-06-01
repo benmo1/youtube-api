@@ -7,7 +7,11 @@ use MorrisPhp\YouTubeApi\Model\Video;
 
 class Service
 {
-    const BATCH_SIZE = 25;
+    /**
+     * Page size for getting videos from youtube
+     * The max they allow is 50, use to reduce respone time
+     */
+    const PAGE_SIZE = 50;
 
     /**
      * @var Google_Service_YouTube
@@ -76,7 +80,7 @@ class Service
                 'snippet',
                 [
                     'channelId' => $channelId,
-                    'maxResults' => 50,
+                    'maxResults' => self::PAGE_SIZE,
                     'type' => 'video',
                     'q' => $this->getQueryString(),
                     'pageToken' => $response ? $response->getNextPageToken() : ''
