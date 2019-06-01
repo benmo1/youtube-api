@@ -2,6 +2,7 @@
 
 namespace MorrisPhp\YouTubeApi\Controller;
 
+use MorrisPhp\YouTubeApi\Exception\NotFoundException;
 use MorrisPhp\YouTubeApi\Repository\ChannelRepository as ChannelRepository;
 use MorrisPhp\YouTubeApi\Repository\VideoRepository as VideoRepository;
 use MorrisPhp\YouTubeApi\YouTube\Service as YoutubeServiceWrapper;
@@ -63,6 +64,20 @@ class Controller
         $videos = $this->videoRepository->getAll();
 
         $response->getBody()->write(json_encode($videos));
+        $response->getBody()->rewind();
+
+        return $response->withStatus(200);
+    }
+
+    public function get(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    {
+        try {
+            $video = $this->videoRepository->get($args['id']);
+        } catch (NotFoundException $ex) {
+            return $response->withStatus(404);
+        }
+
+        $response->getBody()->write(json_encode($video));
         $response->getBody()->rewind();
 
         return $response->withStatus(200);

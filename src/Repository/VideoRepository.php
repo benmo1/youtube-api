@@ -3,6 +3,7 @@
 namespace MorrisPhp\YouTubeApi\Repository;
 
 use DateTime;
+use MorrisPhp\YouTubeApi\Exception\NotFoundException;
 use MorrisPhp\YouTubeApi\Model\Video;
 use PDO;
 
@@ -59,5 +60,26 @@ class VideoRepository
         }
 
         return $videos;
+    }
+
+    /**
+     * @param int|string $id
+     * @return Video
+     */
+    public function get($id) : Video
+    {
+        $statement = $this->pdo->prepare('SELECT * FROM videos WHERE id = :id');
+        $statement->execute(['id' => $id]);
+        $record = $statement->fetch();
+
+        if (!$record) {
+            throw new NotFoundException();
+        }
+
+        return new Video(
+            $record['title'],
+            new DateTime($record['date']),
+            (int) $record['id']
+        );
     }
 }
