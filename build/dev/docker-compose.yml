@@ -29,16 +29,6 @@ services:
             - 3306:3306
         volumes:
             - ./db:/docker-entrypoint-initdb.d
-    composer:
-        build:
-            context: ./composer
-        command: composer --no-plugins --no-scripts
-        depends_on:
-            - slim
-        image: composer/composer:latest
-        volumes:
-            - .:/app
-        working_dir: /app
 networks:
     bridge: {}
 version: '3'
