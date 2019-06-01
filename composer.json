@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.1",
         "ext-pdo": "*",
         "google/apiclient": "^2.2",
         "monolog/monolog": "^1.17",

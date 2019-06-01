@@ -61,6 +61,18 @@ class BaseTestCase extends TestCase
         $this->app = $app;
     }
 
+    protected function setUp() : void
+    {
+        $this->database()->exec('TRUNCATE TABLE videos');
+
+        $this->database()->exec("
+            INSERT INTO videos (title, `date`)
+                 VALUES ('Bikes in the 21st Century', '2019-04-23'),
+                        ('Master cyclist on tour', '2018-04-29'),
+                        ('What goes around comes around, a look at alimunium wheels', '2019-03-23')
+        ");
+    }
+
     /**
      * @return PDO
      */

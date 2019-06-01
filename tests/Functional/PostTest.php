@@ -8,7 +8,7 @@ class PostTest extends BaseTestCase
     {
         $this->markTestSkipped('Uses live youtube api');
 
-        $this->database()->exec('DELETE FROM videos');
+        $this->database()->exec('TRUNCATE TABLE videos');
 
         $this->runApp('POST', '/youtube-search');
 
