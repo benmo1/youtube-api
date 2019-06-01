@@ -2,7 +2,8 @@
 
 namespace MorrisPhp\YouTubeApi\Controller;
 
-use MorrisPhp\YouTubeApi\Repository\Repository;
+use MorrisPhp\YouTubeApi\Repository\ChannelRepository;
+use MorrisPhp\YouTubeApi\Repository\VideoRepository;
 use MorrisPhp\YouTubeApi\YouTube\Service;
 use MorrisPhp\YouTubeApi\FactoryInterface;
 use Psr\Container\ContainerInterface;
@@ -13,7 +14,8 @@ class ControllerFactory implements FactoryInterface
     {
         return new Controller(
             $container->get(Service::class),
-            $container->get(Repository::class)
+            $container->get(ChannelRepository::class),
+            $container->get(VideoRepository::class)
         );
     }
 }

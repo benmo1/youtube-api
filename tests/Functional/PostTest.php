@@ -2,10 +2,12 @@
 
 namespace Tests\Functional;
 
-class GeneralTest extends BaseTestCase
+class PostTest extends BaseTestCase
 {
     public function testPostStoresVideos()
     {
+        $this->database()->exec('DELETE FROM videos');
+
         $this->runApp('POST', '/youtube-search');
 
         $videos = $this->database()

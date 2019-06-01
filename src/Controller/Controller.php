@@ -2,7 +2,8 @@
 
 namespace MorrisPhp\YouTubeApi\Controller;
 
-use MorrisPhp\YouTubeApi\Repository\Repository;
+use MorrisPhp\YouTubeApi\Repository\ChannelRepository as ChannelRepository;
+use MorrisPhp\YouTubeApi\Repository\VideoRepository as VideoRepository;
 use MorrisPhp\YouTubeApi\YouTube\Service as YoutubeServiceWrapper;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -10,34 +11,48 @@ use Psr\Http\Message\ServerRequestInterface;
 class Controller
 {
     /**
-     * @var YouTubeYoutubeServiceWrapper
+     * @var YouTubeServiceWrapper
      */
     private $service;
 
     /**
-     * @var Repository
+     * @var ChannelRepository
      */
-    private $repository;
+    private $channelRepository;
+
+    /**
+     * @var VideoRepository
+     */
+    private $videoRepository;
 
     /**
      * Controller constructor.
-     * @param YouTubeYoutubeServiceWrapper $service
-     * @param Repository $repository
+     * @param YouTubeServiceWrapper $service
+     * @param ChannelRepository $channelRepository
+     * @param VideoRepository $videoRepository
      */
-    public function __construct(YoutubeServiceWrapper $service, Repository $repository)
-    {
+    public function __construct(
+        YouTubeServiceWrapper $service,
+        ChannelRepository $channelRepository,
+        VideoRepository $videoRepository
+    ) {
         $this->service = $service;
-        $this->repository = $repository;
+        $this->channelRepository = $channelRepository;
+        $this->videoRepository = $videoRepository;
     }
 
     public function create(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
-        $id = $this->service->getIdForChannel('globalmtb');
+        $channels = $this->channelRepository->getAll();
 
-        $videos = $this->service->getVideosForChannel($id);
+        foreach ($channels as $channel) {
+            $id = $this->service->getIdForChannel($channel->getChannelName());
 
-        foreach ($videos as $video) {
-            $this->repository->add($video);
+            $videos = $this->service->getVideosForChannel($id);
+
+            foreach ($videos as $video) {
+                $this->videoRepository->add($video);
+            }
         }
 
         return $response->withStatus(200);

@@ -5,7 +5,7 @@ namespace MorrisPhp\YouTubeApi\Repository;
 use MorrisPhp\YouTubeApi\Model\Video;
 use PDO;
 
-class Repository
+class VideoRepository
 {
     const DATE_FORMAT = 'Y-m-d';
     const TITLE_WIDTH = 100;

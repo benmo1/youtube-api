@@ -5,8 +5,10 @@ use MorrisPhp\YouTubeApi\Controller\Controller;
 use MorrisPhp\YouTubeApi\Controller\ControllerFactory;
 use MorrisPhp\YouTubeApi\YouTube\Service;
 use MorrisPhp\YouTubeApi\YouTube\ServiceFactory;
-use MorrisPhp\YouTubeApi\Repository\Repository;
-use MorrisPhp\YouTubeApi\Repository\RepositoryFactory;
+use MorrisPhp\YouTubeApi\Repository\ChannelRepository;
+use MorrisPhp\YouTubeApi\Repository\ChannelRepositoryFactory;
+use MorrisPhp\YouTubeApi\Repository\VideoRepository;
+use MorrisPhp\YouTubeApi\Repository\VideoRepositoryFactory;
 use Slim\App;
 
 return function (App $app) {
@@ -49,5 +51,6 @@ return function (App $app) {
 
     $container[Service::class] = new ServiceFactory();
     $container[Controller::class] = new ControllerFactory();
-    $container[Repository::class] = new RepositoryFactory();
+    $container[ChannelRepository::class] = new ChannelRepositoryFactory();
+    $container[VideoRepository::class] = new VideoRepositoryFactory();
 };

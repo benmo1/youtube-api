@@ -34,6 +34,9 @@ CREATE TABLE IF NOT EXISTS `mydb`.`channels` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
+INSERT INTO `mydb`.`channels` (`channel_name`)
+     VALUES ('GlobalCyclingNetwork'),
+            ('globalmtb');
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
