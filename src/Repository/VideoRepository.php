@@ -51,6 +51,7 @@ class VideoRepository
         $statement = $this->pdo->query('SELECT * FROM videos');
 
         return array_map(function ($record) {
+            unset($record['date']);
             return new Video($record);
         }, $statement->fetchAll());
     }
