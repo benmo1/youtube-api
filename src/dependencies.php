@@ -22,19 +22,29 @@ return function (App $app) {
         return $logger;
     };
 
-    $container[PDO::class] = function ($c) {
+    $container[PDO::class] = function ($c) : PDO {
         $settings = $c->get('settings')['database'];
         $dsn = sprintf('mysql:host=%s;dbname=%s',
             $settings['host'],
             $settings['database'],
         );
 
-        return new PDO(
-            $dsn,
-            $settings['user'],
-            $settings['password'],
-            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-        );
+        $i = 0;
+        $pdo = null;
+        while (!$pdo && $i++ < 10) {
+            try {
+                $pdo = new PDO(
+                    $dsn,
+                    $settings['user'],
+                    $settings['password'],
+                    [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+                );
+            } catch (PDOException $ex) {
+                sleep(2); // Wait for docker container to set up
+            }
+        }
+
+        return $pdo;
     };
 
     $container[Google_Client::class] = function ($c) {
