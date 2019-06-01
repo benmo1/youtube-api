@@ -74,6 +74,7 @@ class Service
     {
         $response = null;
         $videos = [];
+        $i = 0;
 
         do {
             $response = $this->service->search->listSearch(
@@ -93,7 +94,7 @@ class Service
                     'date' => $searchResult->getSnippet()->getPublishedAt()
                 ]);
             }
-        } while ($response->getNextPageToken());
+        } while ($response->getNextPageToken() && ($i++ < 10)); // To save our quota if there is a bug
 
         return $videos;
     }
