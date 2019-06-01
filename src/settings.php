@@ -19,6 +19,9 @@ return [
             'password' => $_ENV['MYSQL_PASSWORD'],
         ],
 
-        'youtube_api_key' => $_ENV['YOUTUBE_API_KEY'],
+        'youtube' => [
+            'api_key' => $_ENV['YOUTUBE_API_KEY'],
+            'filter_path' => __DIR__ . '/../resources/search_filter',
+        ],
     ],
 ];

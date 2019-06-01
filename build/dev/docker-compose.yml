@@ -30,7 +30,7 @@ services:
         volumes:
             - ./db:/docker-entrypoint-initdb.d
 networks:
-    bridge:
+    bridge: {}
 version: '3'
 volumes:
     logs:

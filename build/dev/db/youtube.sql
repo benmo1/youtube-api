@@ -18,7 +18,7 @@ USE `mydb` ;
 -- Table `mydb`.`videos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`videos` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(100) NULL,
   `date` DATETIME NULL,
   PRIMARY KEY (`id`))
@@ -29,7 +29,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`channels`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`channels` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `channel_name` VARCHAR(45) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;

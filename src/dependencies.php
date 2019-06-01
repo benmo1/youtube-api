@@ -2,6 +2,11 @@
 
 use Monolog\Logger;
 use MorrisPhp\YouTubeApi\Controller\Controller;
+use MorrisPhp\YouTubeApi\Controller\ControllerFactory;
+use MorrisPhp\YouTubeApi\YouTube\Service;
+use MorrisPhp\YouTubeApi\YouTube\ServiceFactory;
+use MorrisPhp\YouTubeApi\Repository\Repository;
+use MorrisPhp\YouTubeApi\Repository\RepositoryFactory;
 use Slim\App;
 
 return function (App $app) {
@@ -30,7 +35,19 @@ return function (App $app) {
         );
     };
 
-    $container[Controller::class] = function ($c) {
-        return new Controller();
+    $container[Google_Client::class] = function ($c) {
+        $client = new Google_Client();
+        $apiKey = $c->get('settings')['youtube']['api_key'];
+        $client->setDeveloperKey($apiKey);
+        return $client;
     };
+
+    $container[Google_Service_YouTube::class] = function ($c) {
+        $client = $c->get(Google_Client::class);
+        return new Google_Service_YouTube($client);
+    };
+
+    $container[Service::class] = new ServiceFactory();
+    $container[Controller::class] = new ControllerFactory();
+    $container[Repository::class] = new RepositoryFactory();
 };
