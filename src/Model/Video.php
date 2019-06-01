@@ -2,8 +2,12 @@
 
 namespace MorrisPhp\YouTubeApi\Model;
 
-class Video
+use DateTime;
+use JsonSerializable;
+
+class Video implements JsonSerializable
 {
+    const DATE_FORMAT = 'Y-m-d';
 
     /**
      * @var string
@@ -11,7 +15,7 @@ class Video
     private $title;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
     private $publishedAt;
 
@@ -19,7 +23,7 @@ class Video
      * Note this may be null if it hasn't
      * been persisted to the db yet
      *
-     * @var ?int
+     * @var mixed - int|stringy-int|null
      */
     private $id;
 
@@ -27,9 +31,9 @@ class Video
      * Video constructor.
      * @param int $id
      * @param string $title
-     * @param \DateTime $publishedAt
+     * @param DateTime $publishedAt
      */
-    public function __construct(string $title, \DateTime $publishedAt, int $id = null)
+    public function __construct(string $title, DateTime $publishedAt, $id = null)
     {
         $this->title = $title;
         $this->publishedAt = $publishedAt;
@@ -45,9 +49,9 @@ class Video
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getPublishedAt(): \DateTime
+    public function date(): DateTime
     {
         return $this->publishedAt;
     }
@@ -67,4 +71,17 @@ class Video
     {
         return $this->id;
     }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize() : array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'date' => $this->date()->format(self::DATE_FORMAT)
+        ];
+    }
+
 }

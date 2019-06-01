@@ -57,4 +57,14 @@ class Controller
 
         return $response->withStatus(200);
     }
+
+    public function getAll(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    {
+        $videos = $this->videoRepository->getAll();
+
+        $response->getBody()->write(json_encode($videos));
+        $response->getBody()->rewind();
+
+        return $response->withStatus(200);
+    }
 }
