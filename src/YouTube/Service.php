@@ -2,7 +2,6 @@
 
 namespace MorrisPhp\YouTubeApi\YouTube;
 
-use DateTime;
 use Google_Service_YouTube;
 use MorrisPhp\YouTubeApi\Model\Video;
 
@@ -85,10 +84,10 @@ class Service
             );
 
             foreach ($response->getItems() as $searchResult) {
-                $videos[] = new Video(
-                    $searchResult->getSnippet()->getTitle(),
-                    new DateTime($searchResult->getSnippet()->getPublishedAt())
-                );
+                $videos[] = new Video([
+                    'title' => $searchResult->getSnippet()->getTitle(),
+                    'date' => $searchResult->getSnippet()->getPublishedAt()
+                ]);
             }
         } while ($response->getNextPageToken());
 

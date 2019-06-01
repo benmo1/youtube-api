@@ -39,7 +39,7 @@ class VideoRepository
 
         return $statement->execute([
             'title' => substr($video->getTitle(), 0, self::TITLE_MAX_WIDTH),
-            'published_at' => $video->date()->format(self::DATE_FORMAT)
+            'published_at' => $video->getDate()->format(self::DATE_FORMAT)
         ]);
     }
 
