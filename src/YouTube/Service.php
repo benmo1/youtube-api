@@ -99,4 +99,3 @@ class Service
         return $this->queryString;
     }
 }
-
