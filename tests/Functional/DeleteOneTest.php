@@ -9,8 +9,6 @@ class DeleteOneTest extends BaseTestCase
      */
     public function testDeleteOneYoutubeSearchReturnsExpectedResponse($id, $title, $date)
     {
-        $this->markTestSkipped('For TDD');
-
         $response = $this->runApp(
             'DELETE',
             '/youtube-search/' . $id
@@ -27,8 +25,6 @@ class DeleteOneTest extends BaseTestCase
 
     public function testDeleteOneYoutubeSearchHandlesIdNotFound()
     {
-        $this->markTestSkipped('For TDD');
-
         $response = $this->runApp(
             'DELETE',
             '/youtube-search/' . 1092329

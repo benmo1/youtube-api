@@ -72,7 +72,7 @@ class Controller
     public function get(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
         try {
-            $video = $this->videoRepository->get($args['id']);
+            $video = $this->videoRepository->get($args['id']); // Clean from route regex
         } catch (NotFoundException $ex) {
             return $response->withStatus(404);
         }
@@ -81,5 +81,12 @@ class Controller
         $response->getBody()->rewind();
 
         return $response->withStatus(200);
+    }
+
+    public function destroy(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    {
+        $success = $this->videoRepository->delete($args['id']); // Clean from route regex
+
+        return $response->withStatus($success ? 204 : 404);
     }
 }
