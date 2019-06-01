@@ -1,12 +1,12 @@
 services:
     slim:
-        build:
-            context: ./slim
+        build: ./slim
         command: "php -S 0.0.0.0:8080 -t public"
         depends_on:
             - db
         environment:
             DOCKER: "true"
+        image: local/php
         networks:
             - bridge
         ports:
@@ -29,6 +29,16 @@ services:
             - 3306:3306
         volumes:
             - ./db:/docker-entrypoint-initdb.d
+    composer:
+        build:
+            context: ./composer
+        command: composer --no-plugins --no-scripts
+        depends_on:
+            - slim
+        image: composer/composer:latest
+        volumes:
+            - .:/app
+        working_dir: /app
 networks:
     bridge: {}
 version: '3'
