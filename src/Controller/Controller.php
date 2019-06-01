@@ -44,6 +44,9 @@ class Controller
 
     public function create(ServerRequestInterface $request, ResponseInterface $response, array $args)
     {
+        // Clear previous search
+        $this->videoRepository->deleteAll();
+
         $channels = $this->channelRepository->getAll();
 
         foreach ($channels as $channel) {

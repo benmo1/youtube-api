@@ -97,4 +97,9 @@ class VideoRepository
         return (bool) $statement->rowCount();
     }
 
+    public function deleteAll()
+    {
+        return (bool) $this->pdo->exec('TRUNCATE TABLE videos');
+    }
+
 }
