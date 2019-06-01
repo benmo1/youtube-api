@@ -6,7 +6,7 @@ services:
             - db
         environment:
             DOCKER: "true"
-        image: local/php
+        image: local:php
         networks:
             - bridge
         ports:
