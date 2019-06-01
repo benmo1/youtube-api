@@ -30,7 +30,7 @@ class VideoRepository
      * @param Video $video
      * @return bool
      */
-    public function add(Video $video)
+    public function add(Video $video) : bool
     {
         $statement = $this->pdo->prepare('
             INSERT INTO videos (title, `date`)
@@ -46,20 +46,13 @@ class VideoRepository
     /**
      * @return array<Video>
      */
-    public function getAll()
+    public function getAll() : array
     {
-        $videos = [];
         $statement = $this->pdo->query('SELECT * FROM videos');
 
-        foreach ($statement->fetchAll() as $record) {
-            $videos[] = new Video(
-                $record['title'],
-                new DateTime($record['date']),
-                (int) $record['id']
-            );
-        }
-
-        return $videos;
+        return array_map(function ($record) {
+            return new Video($record);
+        }, $statement->fetchAll());
     }
 
     /**
@@ -76,11 +69,7 @@ class VideoRepository
             throw new NotFoundException();
         }
 
-        return new Video(
-            $record['title'],
-            new DateTime($record['date']),
-            (int) $record['id']
-        );
+        return new Video($record);
     }
 
     /**
@@ -93,4 +82,5 @@ class VideoRepository
         $statement->execute(['id' => $id]);
         return (bool) $statement->rowCount();
     }
+
 }
