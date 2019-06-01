@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 
 class ChannelRepositoryFactory implements FactoryInterface
 {
-    public function __invoke(ContainerInterface $container) : ChannelRepository
+    public function __invoke(ContainerInterface $container): ChannelRepository
     {
         return new ChannelRepository($container->get(PDO::class));
     }

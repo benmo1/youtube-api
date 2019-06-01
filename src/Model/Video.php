@@ -50,7 +50,7 @@ class Video implements JsonSerializable
      */
     public function setId($id): void
     {
-        $this->id = (int) $id;
+        $this->id = (int)$id;
     }
 
     /**
@@ -70,6 +70,18 @@ class Video implements JsonSerializable
     }
 
     /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'id' => $this->id,
+            'title' => $this->title,
+            'date' => $this->getDate() ? $this->getDate()->format(self::DATE_FORMAT) : null
+        ]);
+    }
+
+    /**
      * @return mixed
      */
     public function getDate()
@@ -85,24 +97,16 @@ class Video implements JsonSerializable
     {
         if ($date instanceof DateTime) {
             $this->date = $date;
-        } else if (is_string($date)) {
-            $this->date = new DateTime($date);
-        } else if (empty($date)) {
-            $this->date = null;
         } else {
-            throw new InvalidArgumentException();
+            if (is_string($date)) {
+                $this->date = new DateTime($date);
+            } else {
+                if (empty($date)) {
+                    $this->date = null;
+                } else {
+                    throw new InvalidArgumentException();
+                }
+            }
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function jsonSerialize() : array
-    {
-        return array_filter([
-            'id' => $this->id,
-            'title' => $this->title,
-            'date' => $this->getDate() ? $this->getDate()->format(self::DATE_FORMAT) : null
-        ]);
     }
 }

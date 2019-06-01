@@ -40,19 +40,6 @@ class Service
     }
 
     /**
-     * @return array
-     */
-    public function getQueryString()
-    {
-        if (!$this->queryString) {
-            $filters = explode(PHP_EOL, file_get_contents($this->filterPath));
-            $this->queryString = implode('|', $filters);
-        }
-
-        return $this->queryString;
-    }
-
-    /**
      * @param string $channelName
      * @return string - channelId
      */
@@ -98,4 +85,18 @@ class Service
 
         return $videos;
     }
+
+    /**
+     * @return array
+     */
+    public function getQueryString()
+    {
+        if (!$this->queryString) {
+            $filters = explode(PHP_EOL, file_get_contents($this->filterPath));
+            $this->queryString = implode('|', $filters);
+        }
+
+        return $this->queryString;
+    }
 }
+

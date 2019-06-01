@@ -3,15 +3,14 @@
 use Monolog\Logger;
 use MorrisPhp\YouTubeApi\Controller\Controller;
 use MorrisPhp\YouTubeApi\Controller\ControllerFactory;
-use MorrisPhp\YouTubeApi\Repository\ChannelRepository;
-use MorrisPhp\YouTubeApi\Repository\ChannelRepositoryFactory;
 use MorrisPhp\YouTubeApi\Middleware\JsonContentTypeMiddleware;
 use MorrisPhp\YouTubeApi\Middleware\JsonContentTypeMiddlewareFactory;
-use MorrisPhp\YouTubeApi\YouTube\Service;
-use MorrisPhp\YouTubeApi\YouTube\ServiceFactory;
-
+use MorrisPhp\YouTubeApi\Repository\ChannelRepository;
+use MorrisPhp\YouTubeApi\Repository\ChannelRepositoryFactory;
 use MorrisPhp\YouTubeApi\Repository\VideoRepository;
 use MorrisPhp\YouTubeApi\Repository\VideoRepositoryFactory;
+use MorrisPhp\YouTubeApi\YouTube\Service;
+use MorrisPhp\YouTubeApi\YouTube\ServiceFactory;
 use Slim\App;
 
 return function (App $app) {
@@ -25,7 +24,7 @@ return function (App $app) {
         return $logger;
     };
 
-    $container[PDO::class] = function ($c) : PDO {
+    $container[PDO::class] = function ($c): PDO {
         $settings = $c->get('settings')['database'];
         $dsn = sprintf('mysql:host=%s;dbname=%s',
             $settings['host'],

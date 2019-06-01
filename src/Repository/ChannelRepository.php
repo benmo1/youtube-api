@@ -24,7 +24,7 @@ class ChannelRepository
     /**
      * @return array<Channel>
      */
-    public function getAll() : array
+    public function getAll(): array
     {
         $channels = [];
         $statement = $this->pdo->query('SELECT * FROM channels');
