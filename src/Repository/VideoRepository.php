@@ -117,6 +117,7 @@ class VideoRepository
     {
         $statement = $this->pdo->prepare('DELETE FROM videos WHERE id = :id');
         $statement->execute(['id' => $id]);
+
         return (bool)$statement->rowCount();
     }
 
