@@ -48,7 +48,7 @@ class VideoRepository
      * @param array $videos
      * @return bool
      */
-    public function addMultiple(array $videos)
+    public function addMultiple(array $videos): bool
     {
         $query = 'INSERT INTO videos (title, `date`) VALUES ';
         $query .= str_repeat(('(?, ?),'), count($videos) - 1);
