@@ -42,7 +42,7 @@ class Controller
         $this->videoRepository = $videoRepository;
     }
 
-    public function create(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    public function create(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         // Clear previous search
         $this->videoRepository->deleteAll();
@@ -62,7 +62,7 @@ class Controller
         return $response->withStatus(200);
     }
 
-    public function getAll(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    public function getAll(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         // Clean from middleware
         $params = $request->getQueryParams();
@@ -79,7 +79,7 @@ class Controller
         return $response->withStatus(200);
     }
 
-    public function get(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    public function get(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         try {
             $video = $this->videoRepository->get($args['id']); // Clean from route regex
@@ -93,7 +93,7 @@ class Controller
         return $response->withStatus(200);
     }
 
-    public function destroy(ServerRequestInterface $request, ResponseInterface $response, array $args)
+    public function destroy(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $success = $this->videoRepository->delete($args['id']); // Clean from route regex
 

@@ -56,7 +56,7 @@ class Video implements JsonSerializable
     /**
      * @return mixed
      */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -66,31 +66,19 @@ class Video implements JsonSerializable
      */
     public function setTitle($title): void
     {
-        $this->title = $title;
-    }
-
-    /**
-     * @return array
-     */
-    public function jsonSerialize(): array
-    {
-        return array_filter([
-            'id' => $this->id,
-            'title' => $this->title,
-            'date' => $this->getDate() ? $this->getDate()->format(self::DATE_FORMAT) : null
-        ]);
+        $this->title = (string)$title;
     }
 
     /**
      * @return mixed
      */
-    public function getDate()
+    public function getDate(): ?DateTime
     {
         return $this->date;
     }
 
     /**
-     * @param $date
+     * @param mixed $date
      * @throws \Exception
      */
     public function setDate($date): void
@@ -108,5 +96,17 @@ class Video implements JsonSerializable
                 }
             }
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return array_filter([
+            'id' => $this->id,
+            'title' => $this->title,
+            'date' => $this->getDate() ? $this->getDate()->format(self::DATE_FORMAT) : null
+        ]);
     }
 }

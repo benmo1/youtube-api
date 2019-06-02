@@ -43,7 +43,7 @@ class Service
      * @param string $channelName
      * @return string - channelId
      */
-    public function getIdForChannel(string $channelName)
+    public function getIdForChannel(string $channelName): string
     {
         $response = $this->service->channels->listChannels(
             'id',
@@ -57,7 +57,7 @@ class Service
      * @param string $channelId
      * @return array<Video>
      */
-    public function getVideosForChannel(string $channelId)
+    public function getVideosForChannel(string $channelId): array
     {
         $response = null;
         $videos = [];
@@ -87,9 +87,9 @@ class Service
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getQueryString()
+    public function getQueryString(): string
     {
         if (!$this->queryString) {
             $filters = explode(PHP_EOL, file_get_contents($this->filterPath));

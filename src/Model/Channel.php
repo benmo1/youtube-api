@@ -27,7 +27,7 @@ class Channel
     /**
      * @return mixed
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -37,13 +37,13 @@ class Channel
      */
     public function setId($id): void
     {
-        $this->id = $id;
+        $this->id = (int)$id;
     }
 
     /**
      * @return mixed
      */
-    public function getChannelName()
+    public function getChannelName(): ?string
     {
         return $this->channelName;
     }
@@ -53,6 +53,6 @@ class Channel
      */
     public function setChannelName($channelName): void
     {
-        $this->channelName = $channelName;
+        $this->channelName = (string)$channelName;
     }
 }
