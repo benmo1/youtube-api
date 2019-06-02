@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`videos` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(100) NULL,
   `date` DATETIME NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  FULLTEXT idx (`title`))
 ENGINE = InnoDB;
 
 

@@ -83,8 +83,8 @@ class VideoRepository
      */
     public function getAllByTerm(string $searchTerm): array
     {
-        $statement = $this->pdo->prepare('SELECT * FROM videos WHERE title LIKE :search_term');
-        $statement->execute(['search_term' => "%$searchTerm%"]);
+        $statement = $this->pdo->prepare('SELECT * FROM videos WHERE MATCH(title) AGAINST (:search_term)');
+        $statement->execute(['search_term' => $searchTerm]);
 
         return array_map(function ($record) {
             unset($record['date']);

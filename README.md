@@ -37,6 +37,5 @@ One test is skipped because it hits the actual youtube api. This means it requir
 
 - Fetching results from youtube asynchronously (although node is better than php for this, database insertion may be the bottleneck anyway - see below)
 - Returning paginated results in the get all endpoint
-- Indexes on the videos title column so that searching is qiucker
 - Mocking out the google service so we can have better test coverage around MorrisPhp\YouTube\Service
 - Pulling test fixtures out into a tests/Functional/config folder to make them more visible
