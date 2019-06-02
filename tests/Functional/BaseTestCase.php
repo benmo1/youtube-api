@@ -19,6 +19,11 @@ use Slim\Http\Environment;
 class BaseTestCase extends TestCase
 {
     /**
+     * Absolute path to database test fixtures
+     */
+    const FIXTURE_PATH = __DIR__ . '/fixtures/';
+
+    /**
      * Use middleware when running application?
      *
      * @var bool
@@ -61,16 +66,35 @@ class BaseTestCase extends TestCase
         $this->app = $app;
     }
 
+    /**
+     * Phpunit runs this before tests by default
+     */
     protected function setUp(): void
     {
-        $this->database()->exec('TRUNCATE TABLE videos');
+        $fixtureFiles = glob(self::FIXTURE_PATH . '/*');
 
-        $this->database()->exec("
-            INSERT INTO videos (title, `date`)
-                 VALUES ('Bikes in the 21st Century', '2019-04-23'),
-                        ('Master cyclist on tour', '2018-04-29'),
-                        ('What goes around comes around, a look at alimunium wheels', '2019-03-23')
-        ");
+        $fixtures = array_reduce(
+            $fixtureFiles,
+            function ($carry, $next) {
+                return array_merge_recursive($carry ?? [], include $next);
+            }
+        );
+
+        foreach ($fixtures as $table => $records) {
+            // Truncate table
+            $this->database()->exec("TRUNCATE TABLE $table");
+            foreach ($records as $record) {
+                // Populate fixtures
+                $query = sprintf(
+                    'INSERT INTO %s (%s) VALUES (%s)',
+                    $table,
+                    implode(',', array_keys($record)), // Columns
+                    implode(',', array_fill(0, count($record), '?')) // Placeholders
+                );
+                $statement = $this->database()->prepare($query);
+                $statement->execute(array_values($record)); // Quotes strings but not integers
+            }
+        }
     }
 
     /**

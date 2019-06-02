@@ -24,6 +24,7 @@ class UriQueryValidationMiddleware implements MiddlewareInterface
                     'error' => 'Invalid search characters - must be numeric, alpha, or single spaces.'
                 ]
             ));
+
             return $response->withStatus(400);
         }
 

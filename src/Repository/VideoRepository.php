@@ -43,6 +43,29 @@ class VideoRepository
     }
 
     /**
+     * Add multiple, scales better than using add()
+     *
+     * @param array $videos
+     * @return bool
+     */
+    public function addMultiple(array $videos)
+    {
+        $query = 'INSERT INTO videos (title, `date`) VALUES ';
+        $query .= str_repeat(('(?, ?),'), count($videos) - 1);
+        $query .= '(?, ?);'; // Final one ends with semi colon
+
+        $statement = $this->pdo->prepare($query);
+
+        $params = [];
+        foreach ($videos as $video) {
+            $params[] = substr($video->getTitle(), 0, self::TITLE_MAX_WIDTH);
+            $params[] = $video->getDate()->format(self::DATE_FORMAT);
+        }
+
+        return $statement->execute($params);
+    }
+
+    /**
      * @return array<Video>
      */
     public function getAll(): array
@@ -60,8 +83,8 @@ class VideoRepository
      */
     public function getAllByTerm(string $searchTerm): array
     {
-        $statement = $this->pdo->prepare('SELECT * FROM videos WHERE title LIKE :search_term');
-        $statement->execute(['search_term' => "%$searchTerm%"]);
+        $statement = $this->pdo->prepare('SELECT * FROM videos WHERE MATCH(title) AGAINST (:search_term)');
+        $statement->execute(['search_term' => $searchTerm]);
 
         return array_map(function ($record) {
             unset($record['date']);
@@ -94,6 +117,7 @@ class VideoRepository
     {
         $statement = $this->pdo->prepare('DELETE FROM videos WHERE id = :id');
         $statement->execute(['id' => $id]);
+
         return (bool)$statement->rowCount();
     }
 
@@ -101,5 +125,4 @@ class VideoRepository
     {
         return (bool)$this->pdo->exec('TRUNCATE TABLE videos');
     }
-
 }

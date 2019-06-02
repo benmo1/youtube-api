@@ -15,6 +15,7 @@ class JsonContentTypeMiddleware implements MiddlewareInterface
     ): ResponseInterface {
         /** @var ResponseInterface $response */
         $response = $next($request, $response);
+
         return $response->withHeader('Content-Type', 'application/json');
     }
 }
