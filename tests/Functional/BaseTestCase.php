@@ -66,6 +66,9 @@ class BaseTestCase extends TestCase
         $this->app = $app;
     }
 
+    /**
+     * Phpunit runs this before tests by default
+     */
     protected function setUp(): void
     {
         $fixtureFiles = glob(self::FIXTURE_PATH . '/*');
@@ -85,11 +88,11 @@ class BaseTestCase extends TestCase
                 $query = sprintf(
                     'INSERT INTO %s (%s) VALUES (%s)',
                     $table,
-                    implode(',', array_keys($record)), // columns
-                    implode(',', array_fill(0, count($record), '?')) // placeholders
+                    implode(',', array_keys($record)), // Columns
+                    implode(',', array_fill(0, count($record), '?')) // Placeholders
                 );
                 $statement = $this->database()->prepare($query);
-                $statement->execute(array_values($record));
+                $statement->execute(array_values($record)); // Quotes strings but not integers
             }
         }
     }
