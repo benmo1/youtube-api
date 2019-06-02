@@ -8,9 +8,9 @@ use Slim\App;
 return function (App $app) {
     $app->group('/youtube-search', function (App $app) {
         $app->post('', Controller::class . ':create');
-        $app->get('', Controller::class . ':getAll')
-            ->add(UriQueryValidationMiddleware::class);
+        $app->get('', Controller::class . ':getAll');
         $app->get('/{id:[1-9][0-9]*}', Controller::class . ':get');
         $app->delete('/{id:[1-9][0-9]*}', Controller::class . ':destroy');
-    })->add(JsonContentTypeMiddleware::class);
+    })->add(JsonContentTypeMiddleware::class)
+      ->add(UriQueryValidationMiddleware::class);
 };
