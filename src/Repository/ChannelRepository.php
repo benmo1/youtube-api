@@ -24,16 +24,13 @@ class ChannelRepository
     /**
      * @return array<Channel>
      */
-    public function getAll() : array
+    public function getAll(): array
     {
         $channels = [];
         $statement = $this->pdo->query('SELECT * FROM channels');
 
         foreach ($statement->fetchAll() as $record) {
-            $channels[] = new Channel(
-                $record['id'],
-                $record['channel_name']
-            );
+            $channels[] = new Channel($record);
         }
 
         return $channels;

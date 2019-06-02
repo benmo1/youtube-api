@@ -13,24 +13,21 @@ class GetAllTest extends BaseTestCase
 
         $this->assertEquals(200, $response->getStatusCode());
 
-         $this->assertEquals([
-                [
-                    'title' => 'Bikes in the 21st Century',
-                    'date' => '2019-04-23',
-                    'id' => 1,
-                ],
-                [
-                    'title' => 'Master cyclist on tour',
-                    'date' => '2018-04-29',
-                    'id' => 2,
-                ],
-                [
-                    'title' => 'What goes around comes around, a look at alimunium wheels',
-                    'date' => '2019-03-23',
-                    'id' => 3,
-                ],
+        $this->assertEquals([
+            [
+                'id' => 1,
+                'title' => 'Bikes in the 21st Century',
             ],
-            json_decode((string) $response->getBody(), true)
+            [
+                'id' => 2,
+                'title' => 'Master cyclist on tour',
+            ],
+            [
+                'id' => 3,
+                'title' => 'What goes around comes around, a look at alimunium wheels',
+            ],
+        ],
+            json_decode((string)$response->getBody(), true)
         );
     }
 
@@ -45,6 +42,6 @@ class GetAllTest extends BaseTestCase
 
         $this->assertEquals(200, $response->getStatusCode());
 
-        $this->assertEquals([], json_decode((string) $response->getBody(), true));
+        $this->assertEquals([], json_decode((string)$response->getBody(), true));
     }
 }

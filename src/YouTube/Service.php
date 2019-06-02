@@ -2,13 +2,16 @@
 
 namespace MorrisPhp\YouTubeApi\YouTube;
 
-use DateTime;
 use Google_Service_YouTube;
 use MorrisPhp\YouTubeApi\Model\Video;
 
 class Service
 {
-    const BATCH_SIZE = 25;
+    /**
+     * Page size for getting videos from youtube
+     * The max they allow is 50, use to reduce respone time
+     */
+    const PAGE_SIZE = 50;
 
     /**
      * @var Google_Service_YouTube
@@ -37,23 +40,10 @@ class Service
     }
 
     /**
-     * @return array
-     */
-    public function getQueryString()
-    {
-        if (!$this->queryString) {
-            $filters = explode(PHP_EOL, file_get_contents($this->filterPath));
-            $this->queryString = implode('|', $filters);
-        }
-
-        return $this->queryString;
-    }
-
-    /**
      * @param string $channelName
      * @return string - channelId
      */
-    public function getIdForChannel(string $channelName)
+    public function getIdForChannel(string $channelName): string
     {
         $response = $this->service->channels->listChannels(
             'id',
@@ -67,17 +57,18 @@ class Service
      * @param string $channelId
      * @return array<Video>
      */
-    public function getVideosForChannel(string $channelId)
+    public function getVideosForChannel(string $channelId): array
     {
         $response = null;
         $videos = [];
+        $i = 0;
 
         do {
             $response = $this->service->search->listSearch(
                 'snippet',
                 [
                     'channelId' => $channelId,
-                    'maxResults' => 50,
+                    'maxResults' => self::PAGE_SIZE,
                     'type' => 'video',
                     'q' => $this->getQueryString(),
                     'pageToken' => $response ? $response->getNextPageToken() : ''
@@ -85,13 +76,26 @@ class Service
             );
 
             foreach ($response->getItems() as $searchResult) {
-                $videos[] = new Video(
-                    $searchResult->getSnippet()->getTitle(),
-                    new DateTime($searchResult->getSnippet()->getPublishedAt())
-                );
+                $videos[] = new Video([
+                    'title' => $searchResult->getSnippet()->getTitle(),
+                    'date' => $searchResult->getSnippet()->getPublishedAt()
+                ]);
             }
-        } while ($response->getNextPageToken());
+        } while ($response->getNextPageToken() && ($i++ < 20)); // To save our quota if there is a bug
 
         return $videos;
+    }
+
+    /**
+     * @return string
+     */
+    public function getQueryString(): string
+    {
+        if (!$this->queryString) {
+            $filters = explode(PHP_EOL, file_get_contents($this->filterPath));
+            $this->queryString = implode('|', $filters);
+        }
+
+        return $this->queryString;
     }
 }

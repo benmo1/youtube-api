@@ -1,12 +1,12 @@
 services:
     slim:
-        build:
-            context: ./slim
+        build: ./slim
         command: "php -S 0.0.0.0:8080 -t public"
         depends_on:
             - db
         environment:
             DOCKER: "true"
+        image: local:php
         networks:
             - bridge
         ports:
@@ -32,6 +32,3 @@ services:
 networks:
     bridge: {}
 version: '3'
-volumes:
-    logs:
-        driver: local

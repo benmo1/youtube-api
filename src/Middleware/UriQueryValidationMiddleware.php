@@ -1,6 +1,6 @@
 <?php
 
-namespace MorrisPhp\YouTubeApi\Validation;
+namespace MorrisPhp\YouTubeApi\Middleware;
 
 use MorrisPhp\YouTubeApi\MiddlewareInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -8,8 +8,11 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class UriQueryValidationMiddleware implements MiddlewareInterface
 {
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next): ResponseInterface
-    {
+    public function __invoke(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        callable $next
+    ): ResponseInterface {
         $q = $request->getQueryParams()['q'] ?? null;
 
         // Slim urldecodes the params before this

@@ -2,7 +2,6 @@
 
 namespace MorrisPhp\YouTubeApi\Repository;
 
-use DateTime;
 use MorrisPhp\YouTubeApi\Exception\NotFoundException;
 use MorrisPhp\YouTubeApi\Model\Video;
 use PDO;
@@ -30,7 +29,7 @@ class VideoRepository
      * @param Video $video
      * @return bool
      */
-    public function add(Video $video) : bool
+    public function add(Video $video): bool
     {
         $statement = $this->pdo->prepare('
             INSERT INTO videos (title, `date`)
@@ -39,18 +38,19 @@ class VideoRepository
 
         return $statement->execute([
             'title' => substr($video->getTitle(), 0, self::TITLE_MAX_WIDTH),
-            'published_at' => $video->date()->format(self::DATE_FORMAT)
+            'published_at' => $video->getDate()->format(self::DATE_FORMAT)
         ]);
     }
 
     /**
      * @return array<Video>
      */
-    public function getAll() : array
+    public function getAll(): array
     {
         $statement = $this->pdo->query('SELECT * FROM videos');
 
         return array_map(function ($record) {
+            unset($record['date']);
             return new Video($record);
         }, $statement->fetchAll());
     }
@@ -58,7 +58,7 @@ class VideoRepository
     /**
      * @return array<Video>
      */
-    public function getAllByTerm(string $searchTerm) : array
+    public function getAllByTerm(string $searchTerm): array
     {
         $statement = $this->pdo->prepare('SELECT * FROM videos WHERE title LIKE :search_term');
         $statement->execute(['search_term' => "%$searchTerm%"]);
@@ -73,7 +73,7 @@ class VideoRepository
      * @param int|string $id
      * @return Video
      */
-    public function get($id) : Video
+    public function get($id): Video
     {
         $statement = $this->pdo->prepare('SELECT * FROM videos WHERE id = :id');
         $statement->execute(['id' => $id]);
@@ -90,11 +90,16 @@ class VideoRepository
      * @param $id
      * @return bool
      */
-    public function delete($id) : bool
+    public function delete($id): bool
     {
         $statement = $this->pdo->prepare('DELETE FROM videos WHERE id = :id');
         $statement->execute(['id' => $id]);
-        return (bool) $statement->rowCount();
+        return (bool)$statement->rowCount();
+    }
+
+    public function deleteAll()
+    {
+        return (bool)$this->pdo->exec('TRUNCATE TABLE videos');
     }
 
 }

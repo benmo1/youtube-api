@@ -50,13 +50,13 @@ class Video implements JsonSerializable
      */
     public function setId($id): void
     {
-        $this->id = (int) $id;
+        $this->id = (int)$id;
     }
 
     /**
      * @return mixed
      */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -66,38 +66,42 @@ class Video implements JsonSerializable
      */
     public function setTitle($title): void
     {
-        $this->title = $title;
+        $this->title = (string)$title;
     }
 
     /**
      * @return mixed
      */
-    public function getDate()
+    public function getDate(): ?DateTime
     {
         return $this->date;
     }
 
     /**
-     * @param $date
+     * @param mixed $date
      * @throws \Exception
      */
     public function setDate($date): void
     {
         if ($date instanceof DateTime) {
             $this->date = $date;
-        } else if (is_string($date)) {
-            $this->date = new DateTime($date);
-        } else if (empty($date)) {
-            $this->date = null;
         } else {
-            throw new InvalidArgumentException();
+            if (is_string($date)) {
+                $this->date = new DateTime($date);
+            } else {
+                if (empty($date)) {
+                    $this->date = null;
+                } else {
+                    throw new InvalidArgumentException();
+                }
+            }
         }
     }
 
     /**
      * @return array
      */
-    public function jsonSerialize() : array
+    public function jsonSerialize(): array
     {
         return array_filter([
             'id' => $this->id,

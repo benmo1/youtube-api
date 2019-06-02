@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 
 class VideoRepositoryFactory implements FactoryInterface
 {
-    public function __invoke(ContainerInterface $container) : VideoRepository
+    public function __invoke(ContainerInterface $container): VideoRepository
     {
         return new VideoRepository($container->get(PDO::class));
     }
