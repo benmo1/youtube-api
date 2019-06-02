@@ -61,7 +61,7 @@ class BaseTestCase extends TestCase
         $this->app = $app;
     }
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->database()->exec('TRUNCATE TABLE videos');
 

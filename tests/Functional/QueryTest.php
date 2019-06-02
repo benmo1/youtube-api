@@ -19,7 +19,7 @@ class QueryTest extends BaseTestCase
                 'title' => 'Bikes in the 21st Century',
             ],
         ],
-            json_decode((string) $response->getBody(), true)
+            json_decode((string)$response->getBody(), true)
         );
     }
 
@@ -38,7 +38,7 @@ class QueryTest extends BaseTestCase
                 'title' => 'Master cyclist on tour',
             ],
         ],
-            json_decode((string) $response->getBody(), true)
+            json_decode((string)$response->getBody(), true)
         );
     }
 
@@ -51,7 +51,7 @@ class QueryTest extends BaseTestCase
 
         $this->assertEquals(200, $response->getStatusCode());
 
-        $this->assertEquals([], json_decode((string) $response->getBody(), true));
+        $this->assertEquals([], json_decode((string)$response->getBody(), true));
     }
 
     /**
@@ -67,7 +67,10 @@ class QueryTest extends BaseTestCase
 
         $this->assertEquals(400, $response->getStatusCode());
 
-        $this->assertEquals('{"error":"Invalid search characters - must be numeric, alpha, or single spaces."}', (string) $response->getBody());
+        $this->assertEquals(
+            '{"error":"Invalid search characters - must be numeric, alpha, or single spaces."}',
+            (string)$response->getBody()
+        );
     }
 
     public function badCharacters()
