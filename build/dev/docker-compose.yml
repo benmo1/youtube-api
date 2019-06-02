@@ -32,6 +32,3 @@ services:
 networks:
     bridge: {}
 version: '3'
-volumes:
-    logs:
-        driver: local
