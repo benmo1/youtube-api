@@ -54,9 +54,7 @@ class Controller
 
             $videos = $this->service->getVideosForChannel($id);
 
-            foreach ($videos as $video) {
-                $this->videoRepository->add($video);
-            }
+            $this->videoRepository->addMultiple($videos);
         }
 
         return $response->withStatus(200);

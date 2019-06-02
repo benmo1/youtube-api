@@ -43,6 +43,29 @@ class VideoRepository
     }
 
     /**
+     * Add multiple, scales better than using add()
+     *
+     * @param array $videos
+     * @return bool
+     */
+    public function addMultiple(array $videos)
+    {
+        $query = 'INSERT INTO videos (title, `date`) VALUES ';
+        $query .= str_repeat(('(?, ?),'), count($videos) - 1);
+        $query .= '(?, ?);'; // Final one ends with semi colon
+
+        $statement = $this->pdo->prepare($query);
+
+        $params = [];
+        foreach ($videos as $video) {
+            $params[] = substr($video->getTitle(), 0, self::TITLE_MAX_WIDTH);
+            $params[] = $video->getDate()->format(self::DATE_FORMAT);
+        }
+
+        return $statement->execute($params);
+    }
+
+    /**
      * @return array<Video>
      */
     public function getAll(): array
