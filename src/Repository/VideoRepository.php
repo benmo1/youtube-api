@@ -101,5 +101,4 @@ class VideoRepository
     {
         return (bool)$this->pdo->exec('TRUNCATE TABLE videos');
     }
-
 }
