@@ -29,11 +29,3 @@ You can access the endpoints at localhost:8080/youtube-search
 Tests may hang if `test` is run straight after `start`. This is because the mysql server takes a while to start and the tests require a database connection. However, it retries the connection until it works so they should run.
 
 One test is skipped because it hits the actual youtube api. This means it requires the YOUTUBE_API_KEY mentioned above. It can be run as a one off but not part of the regular suite.
-
-
----
-
-### Things that could be better
-
-- Mocking out the google service so we can have better test coverage around MorrisPhp\YouTube\Service
-- Returning paginated results in the get all endpoint
